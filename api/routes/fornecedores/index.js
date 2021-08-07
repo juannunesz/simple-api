@@ -27,12 +27,20 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const dadosRecebidos = req.body
-    const fornecedor = new Fornecedor(dadosRecebidos)
-    await fornecedor.criar()
-    res.send(
-        JSON.stringify(fornecedor)
-    )
+    try {
+        const dadosRecebidos = req.body
+        const fornecedor = new Fornecedor(dadosRecebidos)
+        await fornecedor.criar()
+        res.send(
+            JSON.stringify(fornecedor)
+        )
+    }catch (erro) {
+        res.send(
+            JSON.stringify({
+                mensagem: erro.message
+            })
+        )
+    }
 })
 
 router.put('/:id', async (req, res) => {
@@ -50,7 +58,22 @@ router.put('/:id', async (req, res) => {
             })
         )
     }
+})
 
+router.delete('/:id', async (req, res) => {
+    try{
+        const id = req.params.id
+        const fornecedor = new Fornecedor({id: id})
+        await fornecedor.carregar()
+        await fornecedor.remover()
+        res.end()
+    }catch(erro){
+        res.send(
+            JSON.stringify({
+                mensagem: erro.message
+            })
+        )
+    }
 })
 
 module.exports = router
