@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-const instance = require('../../database')
+const instance = require('../../database/dbconnection')
 
 const colunas = {
     empresa: {
